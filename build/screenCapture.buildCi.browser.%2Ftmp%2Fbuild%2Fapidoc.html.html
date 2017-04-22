@@ -1,0 +1,132 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/jeromew/gulp-buffer">gulp-buffer (v0.0.2)</a>
+</h1>
+<h4>Make sure all gulp file contents are available as buffer</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-buffer">module gulp-buffer</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-buffer.gulp-buffer">
+            function <span class="apidocSignatureSpan"></span>gulp-buffer
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-buffer" id="apidoc.module.gulp-buffer">module gulp-buffer</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-buffer.gulp-buffer" id="apidoc.element.gulp-buffer.gulp-buffer">
+        function <span class="apidocSignatureSpan"></span>gulp-buffer
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function gulpBuffer() {
+  var stream = through.obj(function(file, enc, callback) {
+
+    // keep null files as-is
+    if (file.isNull()) {
+      this.push(file);
+      return callback();
+    }
+
+    // keep buffer files as-is
+    if (file.isBuffer()) {
+      this.push(file);
+      return callback();
+    }
+
+    // transform stream files into buffer
+    if (file.isStream()) {
+       var self = this;
+       var c_stream = file.contents;
+       var chunks = [];
+       var onreadable = function() {
+         var chunk;
+         while (null !== (chunk = c_stream.read())) {
+           chunks.push(chunk);
+         }
+       };
+       c_stream.on('readable', onreadable);
+       c_stream.once('end', function() {
+	 c_stream.removeListener('readable', onreadable);
+         file.contents = Buffer.concat(chunks);
+         self.push(file);
+	 callback();
+       });
+       return;
+    }
+  });
+
+  return stream;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
